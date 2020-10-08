@@ -6,13 +6,16 @@
 
 
 today=$(date +%F | tr - .)
-esEndpoint=$(IP:PORT) #add ip address and port of elasticsearch instance
-list=$(curl -s "$esEndpoint/_cat/indices?&index=*-${today}" | awk '{print $3}' | awk '!(/^\./)')
+
+esEndpoint=$IP # ip address of elasticsearch instance
+esPort=$PORT # port of elasticsearch instance
+
+list=$(curl -s "$esEndpoint:$esPort/_cat/indices?&index=*-${today}" | awk '{print $3}' | awk '!(/^\./)')
 declare -a my_array
 
 for i in $list
 do
-    a=$(curl -s "$esEndpoint/$i/_stats"| jq ."_all"."primaries"."store" | awk '{print $2}')
+    a=$(curl -s "$esEndpoint:$esPort/$i/_stats"| jq ."_all"."primaries"."store" | awk '{print $2}') # jq is a lightweight and flexible command-line JSON processor
 
     if [ "$a" -ge 0 ] && [ "$a" -le 50000000 ]
     then
