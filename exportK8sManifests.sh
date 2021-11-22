@@ -1,8 +1,8 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # USAGE
 # chmod +x exportK8sManifests
-# ./exportK8sManifests kubernetes-admin@kubernetes
+# ./exportK8sManifest k8s_context
 
 set -e
 
@@ -16,8 +16,6 @@ fi
 #NAMESPACES=$(kubectl --context ${CONTEXT} get -o json namespaces|jq '.items[].metadata.name'|sed "s/\"//g")
 
 RESOURCES="configmap secret daemonset deployment service hpa statefulset serviceaccount configmap clusterrole rolebinding role"
-
-#RESOURCES="statefulset"
 
 NAMESPACE="prometheus"
 
